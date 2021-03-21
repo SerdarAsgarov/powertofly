@@ -9,7 +9,7 @@ from powertoflyapi.seeds.user import seeder
 
 app = Flask(__name__)
 app.config.from_object(Config)
-cors = CORS(app, resources={r"/": {"origins": "localhost, asgarov.ru"}}) #TODO: remove localhost
+cors = CORS(app, resources={r"/": {"origins": "*"}})  # TODO: remove localhost
 api = Api(app)
 db.init_app(app)
 migrate.init_app(app, db)
@@ -22,7 +22,7 @@ parser.add_argument('email', type=str, help="Email of user")
 parser.add_argument('minAge', type=int, help="Age of user (from)")
 parser.add_argument('maxAge', type=int, help="Age of user (to)")
 parser.add_argument('isEmployee', type=bool, help="Is user employee")
-parser.add_argument('page', type=int, help="Number of search page", required=True)
+parser.add_argument('page', type=int, help="Number of page is missing", required=True)
 
 
 class Root(Resource):

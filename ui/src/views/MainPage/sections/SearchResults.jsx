@@ -1,5 +1,5 @@
 import React from "react";
-import {Pagination, Table} from "react-bootstrap";
+import {Col, Pagination, Row, Table} from "react-bootstrap";
 
 
 class SearchResults extends React.Component {
@@ -7,25 +7,47 @@ class SearchResults extends React.Component {
         this.props.loadData();
     }
 
-    DisplayPagination() {
+    DisplayPagination(props) {
+        const {pagesData, setRequestParams} = props;
+
+        let pages = [];
+
+
+        if (pagesData.pages < 6) {
+            for (let i = 1; i <= pagesData.pages; i++) {
+                pages.push(
+                    <Pagination.Item key={i} active={pagesData.page === i}
+                                     onClick={() => setRequestParams({page: i})}>{i}</Pagination.Item>
+                );
+            }
+        } else {
+            let startWith = pagesData.page === 1 ? pagesData.page : pagesData.page - 1;
+            let limit = (startWith + 4 < pagesData.pages) ? startWith + 4 : pagesData.pages - 1;
+
+            if (pagesData.page > 2) {
+                pages.push(<Pagination.Item key={1} onClick={() => setRequestParams({page: 1})}>{1}</Pagination.Item>);
+            }
+
+            if (pagesData.page > 3) {
+                pages.push(<Pagination.Ellipsis key="ell-1"/>);
+            }
+
+            for (let i = startWith; i <= limit; i++) {
+                pages.push(<Pagination.Item key={i} onClick={() => setRequestParams({page: i})}
+                                            active={pagesData.page === i}>{i}</Pagination.Item>);
+            }
+            pages.push(<Pagination.Ellipsis key="ell-2"/>);
+
+            pages.push(<Pagination.Item key={pagesData.pages}
+                                        onClick={() => setRequestParams({page: pagesData.pages})}>{pagesData.pages}</Pagination.Item>);
+        }
+
+
         return (
-            <Pagination size={"sm"}>
-                <Pagination.First/>
-                <Pagination.Prev/>
-                <Pagination.Item>{1}</Pagination.Item>
-                <Pagination.Ellipsis/>
-
-                <Pagination.Item>{10}</Pagination.Item>
-                <Pagination.Item>{11}</Pagination.Item>
-                <Pagination.Item active>{12}</Pagination.Item>
-                <Pagination.Item>{13}</Pagination.Item>
-                <Pagination.Item>{14}</Pagination.Item>
-
-                <Pagination.Ellipsis/>
-                <Pagination.Item>{20}</Pagination.Item>
-                <Pagination.Next/>
-                <Pagination.Last/>
-            </Pagination>
+            <Row>
+                <Col xs={9}><Pagination size={"sm"}>{pages}</Pagination></Col>
+                <Col xs={3}><strong>Results:</strong> {pagesData.total}</Col>
+            </Row>
         )
     }
 
@@ -46,17 +68,18 @@ class SearchResults extends React.Component {
                     <tbody>
                     {this.props.users.map((row, key) => (
                         <tr key={key}>
-                           <td>{row.id}</td>
-                           <td>{row.firstName}</td>
-                           <td>{row.lastName}</td>
-                           <td>{row.email}</td>
-                           <td>{row.age}</td>
-                           <td>{row.isEmployee ? "Yes" : "No"}</td>
+                            <td>{row.id}</td>
+                            <td>{row.firstName}</td>
+                            <td>{row.lastName}</td>
+                            <td>{row.email}</td>
+                            <td>{row.age}</td>
+                            <td>{row.isEmployee ? "Yes" : "No"}</td>
                         </tr>
                     ))}
                     </tbody>
                 </Table>
-                <this.DisplayPagination/>
+                <this.DisplayPagination pagesData={this.props.pagesData}
+                                        setRequestParams={this.props.setRequestParams}/>
             </>
         )
     }

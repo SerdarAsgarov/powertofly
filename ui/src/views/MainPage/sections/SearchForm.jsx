@@ -3,7 +3,9 @@ import {Card, Form, Col, InputGroup, FormControl} from "react-bootstrap";
 
 
 class SearchForm extends React.Component {
-    DisplayAgeForm() {
+    DisplayAgeForm(props) {
+        const {setRequestParams} = props;
+
         const [age, setAge] = React.useState({
             min: 0,
             max: 100
@@ -24,6 +26,11 @@ class SearchForm extends React.Component {
                     max: value
                 });
             }
+
+            setRequestParams({
+                "minAge": age.min,
+                "maxAge": age.max,
+            });
         }
 
         return (
@@ -33,12 +40,12 @@ class SearchForm extends React.Component {
                     <Col>
                         From
                         <Form.Control type="range" datatype="from" defaultValue={0}
-                                      onChange={onAgeChange} min={0} max={age.max} custom/>
+                                      onChange={onAgeChange} onClick={onAgeChange} min={0} max={age.max} custom/>
                     </Col>
                     <Col>
                         To
                         <Form.Control type="range" datatype="to" defaultValue={100}
-                                      onChange={onAgeChange} min={age.min} max={100} custom/>
+                                      onChange={onAgeChange} onClick={onAgeChange} min={age.min} max={100} custom/>
                     </Col>
                 </Form.Row>
                 <Form.Text id="passwordHelpBlock" muted>
@@ -46,6 +53,16 @@ class SearchForm extends React.Component {
                 </Form.Text>
             </Form.Group>
         )
+    }
+
+    onStringChange = (event) => {
+        let input = event.target;
+        let key = input.getAttribute("datatype")
+
+        let params = {};
+        params[key] = input.value.length ? input.value : null;
+
+        this.props.setRequestParams(params);
     }
 
     render() {
@@ -58,10 +75,10 @@ class SearchForm extends React.Component {
                             <Form.Label>Full Name</Form.Label>
                             <Form.Row>
                                 <Col>
-                                    <Form.Control placeholder="First name"/>
+                                    <Form.Control onChange={this.onStringChange} datatype="firstName" placeholder="First name"/>
                                 </Col>
                                 <Col>
-                                    <Form.Control placeholder="Last name"/>
+                                    <Form.Control onChange={this.onStringChange} datatype="lastName" placeholder="Last name"/>
                                 </Col>
                             </Form.Row>
                         </Form.Group>
@@ -75,6 +92,8 @@ class SearchForm extends React.Component {
                                     placeholder="example@gmail.com"
                                     aria-label="Email"
                                     aria-describedby="basic-addon1"
+                                    datatype="email"
+                                    onChange={this.onStringChange}
                                 />
                             </InputGroup>
                         </Form.Group>
@@ -82,9 +101,16 @@ class SearchForm extends React.Component {
                             <Form.Check
                                 type="checkbox"
                                 label="Employees only"
+                                onChange={(event) => {
+                                    if(event.target.checked) {
+                                        this.props.setRequestParams({"isEmployee": true});
+                                    } else {
+                                        this.props.setRequestParams({"isEmployee": null});
+                                    }
+                                }}
                             />
                         </Form.Group>
-                        <this.DisplayAgeForm/>
+                        <this.DisplayAgeForm setRequestParams={this.props.setRequestParams}/>
                     </Form>
                 </Card.Body>
             </Card>
