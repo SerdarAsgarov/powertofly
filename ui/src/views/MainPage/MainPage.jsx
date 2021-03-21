@@ -13,13 +13,41 @@ class MainPage extends React.Component {
             "pages": 0,
         })
 
+        const [params, setParams] = React.useState({
+            "firstName": null,
+            "lastName": null,
+            "email": null,
+            "minAge": null,
+            "maxAge": null,
+            "isEmployee": null,
+            "page": 1,
+        })
+
+        const setRequestParams = (newParams) => {
+            let paramsCopy = params;
+
+            for (let paramName in newParams) {
+                paramsCopy[paramName] = newParams[paramName];
+            }
+
+            if (!("page" in newParams)) {
+                paramsCopy["page"] = 1;
+            }
+
+            setParams(paramsCopy);
+
+            loadData();
+            console.log(params)
+        }
+
 
         const loadData = () => {
-            sendAPIRequest("users", []).then((response) => {
+            sendAPIRequest("users", params).then((response) => {
                 setUsers(response.data.users);
                 setPagesData({
                     "total": response.data.total,
-                    "pages": response.data.pages
+                    "pages": response.data.pages,
+                    "page": params["page"]
                 })
             }).catch(err => alert(err));
         };
@@ -27,10 +55,10 @@ class MainPage extends React.Component {
         return (
             <Row>
                 <Col xs={4}>
-                    <SearchForm/>
+                    <SearchForm setRequestParams={setRequestParams} />
                 </Col>
                 <Col xs={8}>
-                    <SearchResults loadData={loadData} users={users} pagesData={pagesData}/>
+                    <SearchResults loadData={loadData} users={users} pagesData={pagesData} setRequestParams={setRequestParams} />
                 </Col>
             </Row>
         );

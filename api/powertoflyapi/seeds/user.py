@@ -1,3 +1,4 @@
+import random
 from flask_seeder import FlaskSeeder, Seeder, Faker, generator
 from powertoflyapi.db.models import User
 
@@ -19,7 +20,7 @@ class UserSeeder(Seeder):
                 "last_name": generator.Name(),
                 "email": generator.String("[a-z]{6,11}[0-9]{2,5}@gmail.com"),
                 "age": generator.Integer(start=20, end=100),
-                "is_employee": bool(generator.Integer(start=0, end=1)),
+                "is_employee": bool(random.uniform(0, 1)),
             }
         )
 
