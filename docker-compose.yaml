@@ -1,0 +1,38 @@
+version: "3"
+services:
+  react_ui:
+    container_name: react-ui-powertofly
+    build:
+      context: .
+      dockerfile: ".docker/ui.Dockerfile"
+    ports:
+      - "4000:80"
+    depends_on:
+      - powertofly_redisearch
+      - powertofly_postgres
+      - powertofly_user_api
+  powertofly_user_api:
+    container_name: user-api-powertofly
+    build:
+      context: .
+      dockerfile: ".docker/user_api/flask.Dockerfile"
+      args:
+        - DEPLOY_ENVIRONMENT=${DEPLOY_ENVIRONMENT}
+    env_file:
+      - "prod.env"
+    ports:
+      - "4100:80"
+  powertofly_postgres:
+    image: postgres
+    restart: always
+    container_name: powertofly-postgres
+    environment:
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+    ports:
+      - "4201:5432"
+  powertofly_redisearch:
+    container_name: powertofly-redisearch
+    image: "redislabs/redisearch"
+    ports:
+      - "4209:6379"

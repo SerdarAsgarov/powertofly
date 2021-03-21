@@ -1,0 +1,15 @@
+version: "3"
+services:
+  react_ui:
+    container_name: react-ui-powertofly-dev
+  powertofly_user_api:
+    container_name: user-api-powertofly-dev
+    volumes:
+      - "./api/powertoflyapi:/app/powertoflyapi"
+    working_dir: /app/powertoflyapi/
+    env_file:
+      - "dev.env"
+  powertofly_postgres:
+    container_name: user-api-powertofly-postgres-dev
+  powertofly_redisearch:
+    container_name: user-api-powertofly-redisearch-dev
