@@ -104,6 +104,15 @@ User API is based on Flask
 
 ### DB Structure
 
+| Field            | Type        | Null | Key | Default | Extra          |
+|------------------|-------------|------|-----|---------|----------------|
+| id               | int(20)     | NO   | PRI | NULL    | auto_increment |
+| first_name       | varchar(20) | NO   |     | NULL    |                |
+| last_name        | varchar(20) | NO   |     | NULL    |                |
+| email            | varchar(50) | NO   |     | NULL    |                |
+| age              | int(3)      | NO   |     | NULL    |                |
+| is_employee      | smallint(1) | NO   |     | NULL    |                |
+
 
 ## React testing environment
 This wasn't a part of the assignment, but I felt like a UI will be much 
