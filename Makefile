@@ -33,4 +33,4 @@ init:
 
 .PHONY: cache-users
 cache-users:
-	FLASK_APP=powertoflyapi.api .venv/bin/flask cacheusers
+	cd api && FLASK_APP=powertoflyapi.api .venv/bin/flask cacheusers

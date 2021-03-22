@@ -71,11 +71,11 @@ class UserCache:
         for filter_name, value in filters.items():
             # Ugly non-solid way
             if value is not None:
-                if filter_name == "firstName":
+                if filter_name == "firstName" and len(value) > 1:
                     query.append(f"+@first_name:{value}*")
-                if filter_name == "lastName":
+                if filter_name == "lastName" and len(value) > 1:
                     query.append(f"+@last_name:{value}*")
-                if filter_name == "email":
+                if filter_name == "email" and len(value) > 1:
                     query.append(f"+@email:{value}*")
                 if filter_name == "minAge":
                     age = age.replace("minAge", str(value))
