@@ -6,6 +6,12 @@ Implementation of [PowerToFly task](https://gist.github.com/scabbiaza/82e9069cfa
 
 ### Overview
 
+![image info](./ui/public/architecture.png)
+
+ReactUI communicates through Flask API and both served by nginx. 
+
+- UI: [ptf.asgarov.ru](http://ptf.asgarov.ru/) 
+- API: [user.api.ptf.asgarov.ru](http://user.api.ptf.asgarov.ru/users?page=1)
 
 ### Stack
 - API: Flask + Nginx
