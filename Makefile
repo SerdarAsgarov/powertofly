@@ -18,3 +18,13 @@ docker-up-prod:
 .PHONY: docker-down
 docker-down:
 	docker-compose down
+
+.PHONY: init
+init:
+	cd api && python3 -m venv .venv
+	cd api && .venv/bin/python -m pip install -r requirements.txt
+	cd api && ln -s powertoflyapi/seeds seeds
+	cd api && FLASK_APP=powertoflyapi.api .venv/bin/flask db init
+	cd api && FLASK_APP=powertoflyapi.api .venv/bin/flask db migrate
+	cd api && FLASK_APP=powertoflyapi.api .venv/bin/flask db upgrade
+	cd api && FLASK_APP=powertoflyapi.api .venv/bin/flask seed run

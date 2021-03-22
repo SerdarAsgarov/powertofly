@@ -73,12 +73,21 @@ Database is only used when any other cache fails.
 
 ### Database setup
 
+There is a simple command to initialize the database with all the migrations
+and seeding (note that you need to create the database first):
+```commandline
+make init
+```
+
+in general it brakes down to following:
+
 The codebase provides migrations and seeding for faster delivery,
 to initialize migrations use
 
 ```commandline
 flask db init
 flask db migrate
+flask db upgrade
 ```
 
 for seeding 1MM users use
