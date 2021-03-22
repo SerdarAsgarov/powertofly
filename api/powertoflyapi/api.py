@@ -21,8 +21,9 @@ parser.add_argument('lastName', type=str, help="Last name of user")
 parser.add_argument('email', type=str, help="Email of user")
 parser.add_argument('minAge', type=int, help="Age of user (from)")
 parser.add_argument('maxAge', type=int, help="Age of user (to)")
+parser.add_argument('age', type=int, help="Age of user")
 parser.add_argument('isEmployee', type=bool, help="Is user employee")
-parser.add_argument('page', type=int, help="Number of page is missing", required=True)
+parser.add_argument('page', type=int, help="Number of page is missing")
 
 
 class Root(Resource):
@@ -44,6 +45,15 @@ class User(Resource):
         """
         args = parser.parse_args()
         return UserResolver.paginated(filters=args, page=args['page'])
+
+    @cross_origin()
+    def post(self):
+        """
+        POST /users
+        :return :
+        """
+        args = parser.parse_args()
+        return UserResolver.create(args), 201
 
 
 api.add_resource(Root, "/")

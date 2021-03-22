@@ -19,6 +19,13 @@ class User(db.Model):
     age = db.Column(db.Integer(), nullable=False, index=True)
     is_employee = db.Column(db.Boolean(), nullable=False, index=True)
 
+    def __init__(self, first_name, last_name, email, age, is_employee):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.email = email
+        self.age = age
+        self.is_employee = is_employee
+
     def __repr__(self):
         return f"User(db.Model) -> " \
                f"id: {self.id}, First Name: {self.first_name}, Last Name: {self.last_name}, Email: {self.email}, Age: {self.age}"

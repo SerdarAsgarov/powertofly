@@ -17,7 +17,8 @@ class UserCache:
 
         try:
             self.client.create_index((TextField("first_name"), TextField("last_name"), TextField("email"),
-                                      NumericField("age"), NumericField("is_employee"), NumericField("user_id", sortable=True)), definition=definition)
+                                      NumericField("age"), NumericField("is_employee"),
+                                      NumericField("user_id", sortable=True)), definition=definition)
         except redis.exceptions.ResponseError:
             return False
 
@@ -43,7 +44,14 @@ class UserCache:
         :param user:
         :return:
         """
-        self.client.redis.hset(f"doc:{user['id']}", mapping=user)
+        self.client.redis.hset(f"doc:{user.id}", mapping={
+            "first_name": user.first_name.translate(str.maketrans({"-": r"\-"})),
+            "last_name": user.last_name.translate(str.maketrans({"-": r"\-"})),
+            "email": user.email.translate(str.maketrans({"-": r"\-"})),
+            "age": user.age,
+            "user_id": user.id,
+            "is_employee": int(user.is_employee),
+        })
 
         return True
 

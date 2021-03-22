@@ -1,7 +1,7 @@
 import math
 import redis
 from flask import jsonify
-from powertoflyapi.db.models import User
+from powertoflyapi.db.models import db, User
 from powertoflyapi.db.cache import UserCache
 
 
@@ -79,6 +79,19 @@ class UserResolver:
         cache.create_user_index(User.query.order_by(User.id).all())
 
     @staticmethod
+    def create(params):
+        user = User(first_name=params["firstName"], last_name=params["lastName"], email=params["email"],
+                    age=params["age"], is_employee=params["isEmployee"])
+
+        db.session.add(user)
+        db.session.commit()
+
+        cache = UserCache()
+        cache.cache_single_user(user)
+
+        return {"message": "success"}
+
+    @staticmethod
     def paginated(filters, page=1, per_page=20):
         """
         Returns paginated users with filters
@@ -92,7 +105,6 @@ class UserResolver:
             result = UserResolver.from_cache(filters, page, per_page)
             source = "cache"
         except redis.exceptions.ResponseError as e:
-            print(e)
             result = UserResolver.from_db(filters, page, per_page)
             source = "db"
             UserResolver.cache_users()

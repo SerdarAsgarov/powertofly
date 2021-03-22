@@ -17,7 +17,7 @@ Implementation of [PowerToFly task](https://gist.github.com/scabbiaza/82e9069cfa
 Scaling is possible through creating replicas and sharding for both
 _RediSearch_ and _Postgres_ 
 
-## Deployment
+## Deployment and installation
 
 ### Local
 
@@ -41,6 +41,8 @@ DEBUG=false REBUILD=true make docker-up-dev
 ```commandline
 make docker-up-prod
 ```
+
+For database setup refer to [Database setup](#Database) down below
 
 ### Cache
 
@@ -92,7 +94,13 @@ User API is based on Flask
 ### Methods
 - **/** - Basic API Information
 - GET **/users** - Return all users
-- POST **/users** - Create new user
+- POST **/users** - Create new user.
+  Parameters:
+  - _firstName_ - string
+  - _lastName_ - string
+  - _email_ - string
+  - _age_ - int
+  - _is_employee_ - bool
 
 ### DB Structure
 
