@@ -28,3 +28,9 @@ init:
 	cd api && FLASK_APP=powertoflyapi.api .venv/bin/flask db migrate
 	cd api && FLASK_APP=powertoflyapi.api .venv/bin/flask db upgrade
 	cd api && FLASK_APP=powertoflyapi.api .venv/bin/flask seed run
+	cd api && FLASK_APP=powertoflyapi.api .venv/bin/flask cacheusers
+
+
+.PHONY: cache-users
+cache-users:
+	FLASK_APP=powertoflyapi.api .venv/bin/flask cacheusers

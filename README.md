@@ -64,8 +64,17 @@ described it.
 #### Redis
 
 If no cache was found locally API will try and look for the records in Redis.
-The very first API request triggers redis caching and indexing. Not the best
-approach, but it will work fine for this app.
+The very first API request triggers redis caching and indexing. 
+Also caching is possible with flask custom command
+
+```commandline
+FLASK_APP=powertoflyapi.api .venv/bin/flask cacheusers
+```
+
+or simply
+```commandline
+make cache-users
+```
 
 #### Database
 
@@ -79,7 +88,7 @@ and seeding (note that you need to create the database first):
 make init
 ```
 
-in general it brakes down to following:
+in general, it brakes down to following:
 
 The codebase provides migrations and seeding for faster delivery,
 to initialize migrations use

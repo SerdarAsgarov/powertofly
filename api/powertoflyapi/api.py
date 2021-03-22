@@ -56,6 +56,11 @@ class User(Resource):
         return UserResolver.create(args), 201
 
 
+@app.cli.command('cacheusers')
+def cacheusers_command():
+    UserResolver.cache_users()
+
+
 api.add_resource(Root, "/")
 api.add_resource(User, "/users")
 
