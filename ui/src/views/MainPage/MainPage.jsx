@@ -23,6 +23,8 @@ class MainPage extends React.Component {
             "page": 1,
         })
 
+        let [requestNumber, setRequestNumber] = React.useState(1);
+
         const setRequestParams = (newParams) => {
             let paramsCopy = params;
 
@@ -37,28 +39,37 @@ class MainPage extends React.Component {
             setParams(paramsCopy);
 
             loadData();
-            console.log(params)
         }
 
 
         const loadData = () => {
-            sendAPIRequest("users", params).then((response) => {
+            sendAPIRequest("users", params, requestNumber).then((response) => {
                 setUsers(response.data.users);
                 setPagesData({
                     "total": response.data.total,
                     "pages": response.data.pages,
+                    "source": response.data.source,
                     "page": params["page"]
-                })
+                });
+
+                // Caching the first page
+                if (requestNumber === 1) {
+                    console.log("Storing data locally")
+                    response.data.source = "local";
+                    localStorage.setItem("cached_users", JSON.stringify(response));
+                }
+
+                setRequestNumber(requestNumber+1);
             }).catch(err => alert(err));
         };
 
         return (
             <Row>
                 <Col xs={4}>
-                    <SearchForm setRequestParams={setRequestParams} />
+                    <SearchForm setRequestParams={setRequestParams}/>
                 </Col>
                 <Col xs={8}>
-                    <SearchResults loadData={loadData} users={users} pagesData={pagesData} setRequestParams={setRequestParams} />
+                    <SearchResults loadData={loadData} users={users} pagesData={pagesData} setRequestParams={setRequestParams}/>
                 </Col>
             </Row>
         );
