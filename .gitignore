@@ -1,6 +1,11 @@
-.venv
+# IDE
 .idea
+
+# API
+.venv
 __pycache__
+migrations
+
+# UI
 node_modules
 build
-migrations
