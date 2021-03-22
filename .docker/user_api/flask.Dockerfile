@@ -5,4 +5,4 @@ ARG DEPLOY_ENVIRONMENT
 COPY .docker/uwsgi.$DEPLOY_ENVIRONMENT.ini /app/uwsgi.ini
 COPY ./api/requirements.txt /app/requirements.txt
 RUN pip3 install -r requirements.txt
-COPY ./api/powertoflyapi /app
+COPY ./api /app

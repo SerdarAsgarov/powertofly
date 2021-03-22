@@ -9,7 +9,7 @@ from powertoflyapi.seeds.user import seeder
 
 app = Flask(__name__)
 app.config.from_object(Config)
-cors = CORS(app, resources={r"/": {"origins": "*"}})  # TODO: remove localhost
+cors = CORS(app, resources={r"/": {"origins": "asgarov.ru"}})
 api = Api(app)
 db.init_app(app)
 migrate.init_app(app, db)
