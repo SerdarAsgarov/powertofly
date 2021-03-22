@@ -46,7 +46,8 @@ class SearchResults extends React.Component {
         return (
             <Row>
                 <Col xs={9}><Pagination size={"sm"}>{pages}</Pagination></Col>
-                <Col xs={3}><strong>Results:</strong> {pagesData.total}</Col>
+                <Col xs={3} className="align-right"><strong>Source:</strong> {pagesData.source}</Col>
+                <Col xs={3}><strong>Count:</strong> {pagesData.total}</Col>
             </Row>
         )
     }
